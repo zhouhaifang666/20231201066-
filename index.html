@@ -79,9 +79,15 @@
         }
         .quick-actions {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 15px;
             margin-bottom: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .quick-actions {
+                grid-template-columns: 1fr 1fr;
+            }
         }
         .action-btn {
             background: #2488FF;
@@ -288,6 +294,12 @@
             <button class="action-btn" onclick="goToSettings()">
                 <i class="fas fa-cog"></i> 设置
             </button>
+            <button class="action-btn" onclick="goToDataFlow()">
+                <i class="fas fa-project-diagram"></i> 数据流程图
+            </button>
+            <button class="action-btn" onclick="goToForum()">
+                <i class="fas fa-users"></i> 贴吧论坛
+            </button>
         </div>
         
         <button class="logout-btn" onclick="logout()">
@@ -377,6 +389,14 @@
         
         function goToSettings() {
             alert('设置功能开发中...');
+        }
+        
+        function goToDataFlow() {
+            window.location.href = 'data-flow.html';
+        }
+        
+        function goToForum() {
+            alert('贴吧论坛功能开发中...');
         }
         
         function logout() {
