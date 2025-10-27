@@ -1,0 +1,395 @@
+<!DOCTYPE html> 
+<html lang="zh-CN"> 
+<head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>贴吧登录</title> 
+  <style> 
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+    } 
+    body {
+      font-family: 'Microsoft YaHei', Arial, sans-serif;
+    }
+    .login-container { 
+      display: flex; 
+      height: 100vh; 
+    } 
+    .left { 
+      flex: 1; 
+      background-color: #2488FF; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+      align-items: center; 
+      color: #fff; 
+      padding: 20px;
+    } 
+    .logo { 
+      width: 80px; 
+      height: 80px; 
+      background-color: #fff; 
+      border-radius: 15px; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      margin-bottom: 20px; 
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    } 
+    .logo i { 
+      color: #2488FF; 
+      font-size: 40px; 
+    } 
+    .title { 
+      font-size: 36px; 
+      font-weight: bold; 
+      margin-bottom: 15px; 
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    } 
+    .slogan { 
+      font-size: 18px; 
+      text-align: center;
+      line-height: 1.5;
+      max-width: 300px;
+    } 
+    .right { 
+      flex: 1; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      background-color: #f8f9fa;
+    } 
+    .form-container {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      width: 350px;
+    }
+    .form-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 30px;
+      text-align: center;
+      color: #333;
+    }
+    .login-tabs {
+      display: flex;
+      margin-bottom: 25px;
+      border-bottom: 1px solid #eee;
+    }
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 12px 0;
+      cursor: pointer;
+      font-size: 16px;
+      color: #666;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s;
+    }
+    .tab.active {
+      color: #2488FF;
+      border-bottom-color: #2488FF;
+      font-weight: bold;
+    }
+    .login-form {
+      display: block;
+    }
+    .qrcode-form {
+      display: none;
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form input { 
+      width: 100%; 
+      padding: 12px 15px; 
+      border: 1px solid #ddd; 
+      border-radius: 6px; 
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+    .form input:focus {
+      outline: none;
+      border-color: #2488FF;
+      box-shadow: 0 0 0 2px rgba(36, 136, 255, 0.1);
+    }
+    .form button { 
+      width: 100%; 
+      padding: 12px; 
+      background-color: #2488FF; 
+      color: #fff; 
+      border: none; 
+      border-radius: 6px; 
+      font-size: 16px; 
+      cursor: pointer; 
+      transition: background-color 0.3s;
+      font-weight: bold;
+    }
+    .form button:hover {
+      background-color: #1a7ae6;
+    }
+    .form button:active {
+      transform: translateY(1px);
+    }
+    .qrcode-container {
+      margin: 20px 0;
+      padding: 20px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+    .qrcode {
+      width: 160px;
+      height: 160px;
+      margin: 0 auto;
+      background: linear-gradient(45deg, #2488FF, #1a7ae6);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+    .qrcode::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      background: white;
+      border-radius: 4px;
+    }
+    .qrcode::after {
+      content: '贴吧APP扫码登录';
+      position: absolute;
+      z-index: 1;
+      color: #2488FF;
+      font-weight: bold;
+    }
+    .qrcode-tip {
+      font-size: 12px;
+      color: #666;
+      margin-top: 10px;
+      line-height: 1.4;
+    }
+    .refresh-qrcode {
+      margin-top: 15px;
+      color: #2488FF;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .links { 
+      display: flex; 
+      justify-content: space-between; 
+      margin-top: 20px; 
+      font-size: 14px; 
+    } 
+    .links a { 
+      color: #2488FF; 
+      text-decoration: none; 
+      transition: color 0.3s;
+    }
+    .links a:hover {
+      color: #1a7ae6;
+      text-decoration: underline;
+    }
+    .remember-me {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+    .remember-me input {
+      width: auto;
+      margin-right: 8px;
+    }
+    @media (max-width: 768px) {
+      .login-container {
+        flex-direction: column;
+      }
+      .left {
+        padding: 40px 20px;
+      }
+      .form-container {
+        width: 90%;
+        max-width: 400px;
+        margin: 20px auto;
+      }
+    }
+  </style> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+</head> 
+<body> 
+  <div class="login-container"> 
+    <div class="left"> 
+      <div class="logo"> 
+        <i class="fas fa-dragon"></i>
+      </div> 
+      <div class="title">贴吧</div> 
+      <div class="slogan">分享你的兴趣，连接志同道合的人</div> 
+    </div> 
+    <div class="right"> 
+      <div class="form-container">
+        <div class="form-title">用户登录</div>
+        <div class="login-tabs">
+          <div class="tab active" onclick="switchTab('password')">密码登录</div>
+          <div class="tab" onclick="switchTab('qrcode')">扫码登录</div>
+        </div>
+        
+        <!-- 密码登录表单 -->
+        <div class="login-form" id="password-form">
+          <div class="form"> 
+            <div class="form-group">
+              <input type="text" placeholder="用户名/手机号" id="username"> 
+            </div>
+            <div class="form-group">
+              <input type="password" placeholder="密码" id="password"> 
+            </div>
+            <div class="remember-me">
+              <input type="checkbox" id="remember">
+              <label for="remember">记住我</label>
+            </div>
+            <button onclick="handleLogin()">登录</button> 
+            <div class="links"> 
+              <a href="#">忘记密码？</a> 
+              <a href="#">注册账号</a> 
+            </div> 
+          </div>
+        </div>
+        
+        <!-- 二维码登录表单 -->
+        <div class="qrcode-form" id="qrcode-form">
+          <div class="qrcode-container">
+            <div class="qrcode" id="qrcode-display"></div>
+            <div class="qrcode-tip">
+              请使用贴吧APP扫描二维码登录<br>
+              安全快捷，无需输入密码
+            </div>
+            <div class="refresh-qrcode" onclick="refreshQRCode()">
+              <i class="fas fa-sync-alt"></i> 刷新二维码
+            </div>
+          </div>
+          <div class="links"> 
+            <a href="#" onclick="switchTab('password')">密码登录</a> 
+            <a href="#">下载贴吧APP</a> 
+          </div> 
+        </div>
+      </div>
+    </div> 
+  </div> 
+
+  <script>
+    // 切换登录方式
+    function switchTab(tabType) {
+      const passwordTab = document.querySelector('.tab:nth-child(1)');
+      const qrcodeTab = document.querySelector('.tab:nth-child(2)');
+      const passwordForm = document.getElementById('password-form');
+      const qrcodeForm = document.getElementById('qrcode-form');
+      
+      if (tabType === 'password') {
+        passwordTab.classList.add('active');
+        qrcodeTab.classList.remove('active');
+        passwordForm.style.display = 'block';
+        qrcodeForm.style.display = 'none';
+        document.getElementById('username').focus();
+      } else {
+        passwordTab.classList.remove('active');
+        qrcodeTab.classList.add('active');
+        passwordForm.style.display = 'none';
+        qrcodeForm.style.display = 'block';
+        generateQRCode();
+      }
+    }
+    
+    // 生成二维码（模拟）
+    function generateQRCode() {
+      const qrcodeDisplay = document.getElementById('qrcode-display');
+      // 模拟二维码生成过程
+      qrcodeDisplay.innerHTML = '<i class="fas fa-qrcode" style="font-size: 48px; z-index: 1; color: #2488FF;"></i>';
+      
+      // 模拟二维码扫描状态
+       setTimeout(() => {
+         qrcodeDisplay.style.background = 'linear-gradient(45deg, #4CAF50, #45a049)';
+         qrcodeDisplay.innerHTML = '<i class="fas fa-check" style="font-size: 48px; z-index: 1; color: #4CAF50;"></i>';
+         
+         setTimeout(() => {
+           alert('扫码成功！正在登录...');
+           // 模拟扫码登录成功，跳转到首页
+           setTimeout(() => {
+             window.location.href = 'index.html?username=贴吧用户&loginType=qrcode';
+           }, 1000);
+         }, 1000);
+       }, 3000);
+    }
+    
+    // 刷新二维码
+    function refreshQRCode() {
+      const qrcodeDisplay = document.getElementById('qrcode-display');
+      qrcodeDisplay.style.background = 'linear-gradient(45deg, #2488FF, #1a7ae6)';
+      qrcodeDisplay.innerHTML = '<i class="fas fa-qrcode" style="font-size: 48px; z-index: 1; color: #2488FF;"></i>';
+      
+      // 重新开始模拟扫描过程
+       setTimeout(() => {
+         qrcodeDisplay.style.background = 'linear-gradient(45deg, #4CAF50, #45a049)';
+         qrcodeDisplay.innerHTML = '<i class="fas fa-check" style="font-size: 48px; z-index: 1; color: #4CAF50;"></i>';
+         
+         setTimeout(() => {
+           alert('扫码成功！正在登录...');
+           // 模拟扫码登录成功，跳转到首页
+           setTimeout(() => {
+             window.location.href = 'index.html?username=贴吧用户&loginType=qrcode';
+           }, 1000);
+         }, 1000);
+       }, 3000);
+    }
+    
+    // 密码登录处理
+    function handleLogin() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const remember = document.getElementById('remember').checked;
+      
+      if (!username || !password) {
+        alert('请输入用户名和密码');
+        return;
+      }
+      
+      // 模拟登录处理
+      console.log('登录信息:', { username, password, remember });
+      
+      // 显示登录成功提示
+      alert('登录成功！正在跳转到首页...');
+      
+      // 跳转到首页，并传递用户名参数
+      setTimeout(() => {
+        window.location.href = 'index.html?username=' + encodeURIComponent(username);
+      }, 1000);
+    }
+    
+    // 回车键登录（仅在密码登录模式下有效）
+    document.addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        const passwordForm = document.getElementById('password-form');
+        if (passwordForm.style.display !== 'none') {
+          handleLogin();
+        }
+      }
+    });
+    
+    // 页面加载完成后自动聚焦用户名输入框
+    window.addEventListener('load', function() {
+      document.getElementById('username').focus();
+    });
+  </script>
+</body> 
+</html>
